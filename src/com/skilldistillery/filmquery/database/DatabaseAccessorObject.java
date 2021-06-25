@@ -12,7 +12,7 @@ import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
-	private static final String URL = "jdbc:mysql://localhost:3306/sdvid";
+	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
 	private String user = "student";
 	private String pass = "student";
 	static {
@@ -25,11 +25,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	public Film findFilmById(int filmId) {
 		Film film = null;
-		String sql = "SELECT id, title, release_year, rating, description, language_id, "
-				+ " FROM film WHERE id = ?";
-		PreparedStatement stmt = null;
-		Connection conn;
+		String sql = "SELECT film.id, title, description, release_year, language_id, rental_duration,"
+				+ "rental_rate, length, replacement_cost, rating, special_features "
+				+ " FROM film JOIN language ON film.language_id = language.id" + " WHERE film.id = ?";
 		try {
+			PreparedStatement stmt = null;
+			Connection conn;
 			conn = DriverManager.getConnection(URL, user, pass);
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
@@ -95,14 +96,16 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 		return actors;
 	}
+
 	public List<Film> findFilmsByActorId(int actorId) {
 		return null;
 	}
 
+	@Override
 	public List<Film> findFilmBySearchWord(String filmSearch) {
 		Film film = null;
 		List<Film> films = new ArrayList<Film>();
-		String sql = "SELECT title, description, film.id, release_year, rating, name"
+		String sql = "SELECT title, description, film.id, release_year, rating, language_id"
 				+ " FROM film JOIN language ON film.language_id = language.id "
 				+ " WHERE film.title LIKE ? OR film.description LIKE ?";
 		try (Connection conn = DriverManager.getConnection(URL, "student", "student");

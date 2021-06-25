@@ -52,7 +52,7 @@ public class FilmQueryApp {
 			case "2":
 				System.out.println("Enter part of the title or description of the film");
 				String filmSearch = input.next();
-				films = db.findFilmById(filmSearch);
+				films = db.findFilmBySearchWord(filmSearch);
 				if (films.size() == 0) {
 					System.out.println("Film Not Found");
 				} else {
