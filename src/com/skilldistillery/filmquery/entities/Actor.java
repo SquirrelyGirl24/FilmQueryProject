@@ -1,5 +1,7 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.List;
+
 public class Actor {
 	private int id;
 	private String firstName;
@@ -68,11 +70,16 @@ public class Actor {
 		return "Actor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 
-	public Actor(int id, String firstName, String lastName) {
+	public Actor() {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+
+	public void setFilms(List<Film> findFilmsByActorId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
